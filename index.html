@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -398,12 +399,11 @@
             z-index: -1;
         }
         
-        /* 电子名片样式 */
+        /* 电子名片样式 - 优化后的样式 */
         .business-card {
             background: white;
             border-radius: 16px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
             margin: 2rem auto;
             max-width: 800px;
             display: none;
@@ -428,12 +428,11 @@
             display: flex;
             flex-wrap: wrap;
             gap: 2rem;
-            align-items: center;
+            align-items: flex-start;
         }
         
-        .business-card.split-layout .business-card-content {
-            flex-direction: row;
-            align-items: flex-start;
+        .business-card.split-layout {
+            padding: 2rem;
         }
         
         .business-card.split-layout .business-card-left {
@@ -452,6 +451,10 @@
             overflow: hidden;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .business-card.split-layout .business-card-image img {
@@ -459,6 +462,18 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.3s ease;
+        }
+        
+        .business-card.split-layout .business-card-image::before {
+            content: '公司/个人形象图';
+            position: absolute;
+            color: #999;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .business-card.split-layout .business-card-image:empty::before {
+            display: block;
         }
         
         .business-card.split-layout .business-card-code {
@@ -469,6 +484,10 @@
             border-radius: 12px;
             border: 1px solid #eee;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .business-card.split-layout .business-card-right {
@@ -491,6 +510,22 @@
             width: 100%;
             height: 250px;
             overflow: hidden;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .business-card.full-layout .business-card-image::before {
+            content: '公司/个人形象图';
+            position: absolute;
+            color: #999;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .business-card.full-layout .business-card-image:empty::before {
+            display: block;
         }
         
         .business-card.full-layout .business-card-image img {
@@ -511,6 +546,10 @@
             padding: 1.5rem;
             margin-top: 1rem;
             background: white;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .business-card-name {
@@ -527,6 +566,8 @@
             color: #666;
             margin-bottom: 1.5rem;
             font-weight: 500;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
         }
         
         .business-card-info {
@@ -550,6 +591,15 @@
             gap: 0.8rem;
             color: #555;
             font-size: 1rem;
+            background: #f9f9f9;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .contact-item:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
         }
         
         .contact-item i {
@@ -798,19 +848,20 @@
             
             <div class="tab-content" id="barcode-tab">
                 <div class="form-group">
-                    <label for="barcode-content"><i class="fas fa-pen"></i> 条形码内容 (仅数字)</label>
-                    <input type="text" id="barcode-content" placeholder="输入数字..." value="123456789012" pattern="\d*">
+                    <label for="barcode-content"><i class="fas fa-pen"></i> 条形码内容</label>
+                    <input type="text" id="barcode-content" placeholder="输入内容..." value="123456789012">
                 </div>
                 
                 <div class="settings-group">
                     <div class="setting">
                         <label for="barcode-type"><i class="fas fa-barcode"></i> 条形码类型</label>
                         <select id="barcode-type">
-                            <option value="EAN13">EAN-13 (13位数字)</option>
-                            <option value="UPC">UPC (12位数字)</option>
-                            <option value="ITF14">ITF-14 (14位数字)</option>
-                            <option value="MSI">MSI (仅数字)</option>
-                            <option value="pharmacode">Pharmacode (仅数字)</option>
+                            <option value="CODE128" selected>CODE128 (通用)</option>
+                            <option value="CODE39">CODE39</option>
+                            <option value="EAN13">EAN-13 (商品码)</option>
+                            <option value="UPC">UPC (商品码)</option>
+                            <option value="ITF14">ITF-14 (物流)</option>
+                            <option value="pharmacode">Pharmacode (药品)</option>
                         </select>
                     </div>
                     
@@ -1101,7 +1152,7 @@
             document.querySelectorAll('input[name="card-type"]').forEach(radio => {
                 radio.addEventListener('change', function() {
                     document.getElementById('card-content').placeholder = 
-                        this.value === 'qr' ? '输入要编码的内容...' : '输入数字...';
+                        this.value === 'qr' ? '输入要编码的内容...' : '输入内容...';
                 });
             });
             
@@ -1207,7 +1258,7 @@
                 });
             }
             
-            // 生成条形码
+            // 生成条形码 - 修复版
             function generateBarcode() {
                 const btn = document.getElementById('generate-barcode');
                 const originalText = btn.innerHTML;
@@ -1223,14 +1274,6 @@
                     return;
                 }
                 
-                // 验证是否为纯数字
-                if (!/^\d+$/.test(content)) {
-                    alert('条形码内容必须为纯数字');
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('loading');
-                    return;
-                }
-                
                 const type = document.getElementById('barcode-type').value;
                 const width = parseInt(document.getElementById('barcode-width').value);
                 const height = parseInt(document.getElementById('barcode-height').value);
@@ -1239,7 +1282,17 @@
                 const displayValue = document.getElementById('barcode-display-value').value === 'true';
                 
                 try {
-                    JsBarcode('#barcode', content, {
+                    // 清空之前的内容
+                    const barcodeElement = document.getElementById('barcode');
+                    barcodeElement.innerHTML = '';
+                    
+                    // 创建SVG元素
+                    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                    svg.id = 'barcode-svg';
+                    barcodeElement.appendChild(svg);
+                    
+                    // 生成条形码
+                    JsBarcode('#barcode-svg', content, {
                         format: type,
                         width: width,
                         height: height,
@@ -1270,7 +1323,7 @@
                 btn.classList.remove('loading');
             }
             
-            // 生成电子名片
+            // 生成电子名片 - 优化版
             function generateBusinessCard() {
                 const btn = document.getElementById('generate-card');
                 const originalText = btn.innerHTML;
@@ -1444,11 +1497,6 @@
                     alert('请先生成电子名片');
                     return;
                 }
-                
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
-                canvas.width = card.offsetWidth;
-                canvas.height = card.offsetHeight;
                 
                 html2canvas(card, {
                     scale: 2,
