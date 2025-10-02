@@ -22,6 +22,21 @@
             --danger-color: #d63031;
             --card-bg: rgba(255, 255, 255, 0.95);
             --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            --bg-color: #f5f7fa;
+            --text-color: #2d3436;
+            --input-bg: rgba(255, 255, 255, 0.8);
+            --border-color: #e0e0e0;
+        }
+
+        [data-theme="dark"] {
+            --dark-color: #f8f9fa;
+            --light-color: #2d3436;
+            --card-bg: rgba(45, 52, 54, 0.95);
+            --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            --bg-color: #1a1e1f;
+            --text-color: #f8f9fa;
+            --input-bg: rgba(45, 52, 54, 0.8);
+            --border-color: #555;
         }
         
         * {
@@ -32,12 +47,13 @@
         }
         
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #dfe6e9 100%);
+            background: var(--bg-color);
             min-height: 100vh;
             padding: 2rem;
-            color: var(--dark-color);
+            color: var(--text-color);
             position: relative;
             overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         .container {
@@ -51,6 +67,7 @@
             text-align: center;
             margin-bottom: 3rem;
             animation: fadeInUp 0.8s ease;
+            position: relative;
         }
         
         h1 {
@@ -68,9 +85,32 @@
         
         .subtitle {
             font-size: 1.2rem;
-            color: var(--dark-color);
+            color: var(--text-color);
             opacity: 0.8;
             font-weight: 300;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+            color: var(--text-color);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: rotate(30deg);
         }
         
         .card {
@@ -82,7 +122,7 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
             transform: translateY(0);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
         }
@@ -112,7 +152,7 @@
             display: block;
             margin-bottom: 0.8rem;
             font-weight: 600;
-            color: var(--dark-color);
+            color: var(--text-color);
             font-size: 1.05rem;
             display: flex;
             align-items: center;
@@ -122,18 +162,19 @@
         input, textarea, select {
             width: 100%;
             padding: 1rem 1.2rem;
-            border: 2px solid #e0e0e0;
+            border: 2px solid var(--border-color);
             border-radius: 12px;
             font-size: 1rem;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--input-bg);
+            color: var(--text-color);
         }
         
         input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.2);
-            background: white;
+            background: var(--input-bg);
         }
         
         textarea {
@@ -220,19 +261,19 @@
         .result-title {
             font-size: 1.4rem;
             margin-bottom: 1.5rem;
-            color: var(--dark-color);
+            color: var(--text-color);
             font-weight: 600;
         }
         
         .code-display {
-            background: white;
+            background: var(--input-bg);
             padding: 2rem;
             border-radius: 16px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             margin-bottom: 2rem;
             display: inline-block;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
         }
         
         .code-display:hover {
@@ -254,14 +295,14 @@
         .tabs {
             display: flex;
             margin-bottom: 2rem;
-            border-bottom: 2px solid rgba(0,0,0,0.05);
+            border-bottom: 2px solid var(--border-color);
         }
         
         .tab {
             padding: 1rem 2rem;
             cursor: pointer;
             font-weight: 600;
-            color: var(--dark-color);
+            color: var(--text-color);
             opacity: 0.7;
             transition: all 0.3s ease;
             position: relative;
@@ -332,10 +373,11 @@
         .scan-method {
             padding: 0.8rem 1.5rem;
             border-radius: 8px;
-            background: white;
+            background: var(--input-bg);
             cursor: pointer;
             transition: all 0.3s;
-            border: 2px solid #eee;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
         }
         
         .scan-method.active {
@@ -349,8 +391,12 @@
             margin: 0 auto;
             border-radius: 12px;
             overflow: hidden;
-            background: #f0f0f0;
+            background: var(--input-bg);
             position: relative;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         #scan-video {
@@ -365,9 +411,10 @@
         .scan-result {
             margin-top: 1.5rem;
             padding: 1rem;
-            background: white;
+            background: var(--input-bg);
             border-radius: 12px;
             display: none;
+            color: var(--text-color);
         }
         
         .file-input-wrapper {
@@ -399,19 +446,19 @@
             z-index: -1;
         }
         
-        /* 电子名片样式 - 优化后的样式 */
+        /* 电子名片样式 */
         .business-card {
-            background: white;
+            background: var(--input-bg);
             border-radius: 16px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             margin: 2rem auto;
             max-width: 800px;
             display: none;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            background: linear-gradient(145deg, var(--input-bg) 0%, var(--card-bg) 100%);
         }
         
         .business-card::before {
@@ -451,7 +498,7 @@
             overflow: hidden;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            background: #f5f5f5;
+            background: var(--input-bg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -480,9 +527,9 @@
             width: 100%;
             text-align: center;
             padding: 1.5rem;
-            background: white;
+            background: var(--input-bg);
             border-radius: 12px;
-            border: 1px solid #eee;
+            border: 1px solid var(--border-color);
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             min-height: 150px;
             display: flex;
@@ -510,7 +557,7 @@
             width: 100%;
             height: 250px;
             overflow: hidden;
-            background: #f5f5f5;
+            background: var(--input-bg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -536,7 +583,7 @@
         
         .business-card.full-layout .business-card-details {
             padding: 2rem;
-            background: white;
+            background: var(--input-bg);
             position: relative;
         }
         
@@ -545,7 +592,7 @@
             text-align: center;
             padding: 1.5rem;
             margin-top: 1rem;
-            background: white;
+            background: var(--input-bg);
             min-height: 150px;
             display: flex;
             align-items: center;
@@ -563,17 +610,18 @@
         
         .business-card-title {
             font-size: 1.2rem;
-            color: #666;
+            color: var(--text-color);
+            opacity: 0.7;
             margin-bottom: 1.5rem;
             font-weight: 500;
             padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border-color);
         }
         
         .business-card-info {
             margin-bottom: 1.5rem;
             line-height: 1.8;
-            color: #555;
+            color: var(--text-color);
             font-size: 1.1rem;
             white-space: pre-line;
         }
@@ -589,16 +637,16 @@
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            color: #555;
+            color: var(--text-color);
             font-size: 1rem;
-            background: #f9f9f9;
+            background: var(--card-bg);
             padding: 0.8rem 1.2rem;
             border-radius: 8px;
             transition: all 0.3s;
         }
         
         .contact-item:hover {
-            background: #f0f0f0;
+            background: var(--input-bg);
             transform: translateY(-2px);
         }
         
@@ -618,12 +666,13 @@
         .layout-option {
             flex: 1;
             padding: 1rem;
-            border: 2px solid #eee;
+            border: 2px solid var(--border-color);
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
-            background: white;
+            background: var(--input-bg);
+            color: var(--text-color);
         }
         
         .layout-option:hover {
@@ -767,6 +816,9 @@
         <header>
             <h1><i class="fas fa-magic"></i> 灵动码生成器 Pro</h1>
             <p class="subtitle">专业级二维码与条形码生成解决方案</p>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
         </header>
         
         <div class="card">
@@ -838,7 +890,7 @@
                 <div class="result-container" id="qr-result">
                     <h3 class="result-title">您的二维码</h3>
                     <div class="code-display">
-                        <div id="qrcode"></div>
+                        <canvas id="qrcode"></canvas>
                     </div>
                     <div class="action-buttons">
                         <button id="download-qr" class="btn btn-secondary"><i class="fas fa-download"></i> 下载PNG</button>
@@ -909,7 +961,7 @@
                 <div class="result-container" id="barcode-result">
                     <h3 class="result-title">您的条形码</h3>
                     <div class="code-display">
-                        <div id="barcode"></div>
+                        <svg id="barcode"></svg>
                     </div>
                     <div class="action-buttons">
                         <button id="download-barcode" class="btn btn-secondary"><i class="fas fa-download"></i> 下载PNG</button>
@@ -986,58 +1038,52 @@
                 <div class="business-card split-layout" id="business-card-result">
                     <div class="business-card-content">
                         <div class="business-card-left">
-                            <div class="business-card-image">
-                                <img id="card-result-image" src="" alt="电子名片图片">
-                            </div>
-                            <div class="business-card-code" id="card-result-code"></div>
+                            <div class="business-card-image"></div>
+                            <div class="business-card-code"></div>
                         </div>
                         <div class="business-card-right">
-                            <h3 class="business-card-name" id="card-result-name"></h3>
-                            <p class="business-card-title" id="card-result-title"></p>
-                            <div class="business-card-info" id="card-result-info"></div>
+                            <h2 class="business-card-name">张三</h2>
+                            <p class="business-card-title">高级前端开发工程师</p>
+                            <div class="business-card-info">电话: 138-8888-8888
+邮箱: zhangsan@example.com
+地址: 北京市朝阳区科技园A座1001室</div>
                             <div class="business-card-contact">
                                 <div class="contact-item">
                                     <i class="fas fa-phone"></i>
-                                    <span id="card-result-phone"></span>
+                                    <span>138-8888-8888</span>
                                 </div>
                                 <div class="contact-item">
                                     <i class="fas fa-envelope"></i>
-                                    <span id="card-result-email"></span>
+                                    <span>zhangsan@example.com</span>
                                 </div>
                                 <div class="contact-item">
                                     <i class="fas fa-map-marker-alt"></i>
-                                    <span id="card-result-address"></span>
+                                    <span>北京市朝阳区</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="action-buttons">
-                        <button id="download-card" class="btn btn-secondary"><i class="fas fa-download"></i> 下载名片</button>
-                    </div>
+                </div>
+                
+                <div class="action-buttons" id="card-actions" style="display: none; margin-top: 2rem;">
+                    <button id="download-card" class="btn btn-secondary"><i class="fas fa-download"></i> 下载名片</button>
                 </div>
             </div>
             
             <div class="tab-content" id="scan-tab">
                 <div class="scan-container">
-                    <h3 class="result-title"><i class="fas fa-qrcode"></i> 扫码识别</h3>
-                    <p>选择扫码方式，可以扫描二维码或条形码</p>
-                    
                     <div class="scan-methods">
-                        <div class="scan-method active" data-method="camera">
-                            <i class="fas fa-camera"></i> 摄像头扫描
-                        </div>
-                        <div class="scan-method" data-method="upload">
-                            <i class="fas fa-upload"></i> 上传图片扫描
-                        </div>
+                        <div class="scan-method active" data-method="camera">摄像头扫码</div>
+                        <div class="scan-method" data-method="upload">上传图片扫码</div>
                     </div>
                     
                     <div class="scan-section" id="camera-scan">
                         <div class="scan-preview">
-                            <video id="scan-video" playsinline></video>
+                            <video id="scan-video" autoplay playsinline></video>
                             <canvas id="scan-canvas"></canvas>
                         </div>
-                        <button id="start-scan" class="btn"><i class="fas fa-play"></i> 开始扫描</button>
-                        <button id="stop-scan" class="btn btn-secondary" style="display: none;"><i class="fas fa-stop"></i> 停止扫描</button>
+                        <button id="start-camera" class="btn"><i class="fas fa-camera"></i> 启动摄像头</button>
+                        <button id="stop-camera" class="btn btn-secondary" style="display: none;"><i class="fas fa-stop"></i> 停止摄像头</button>
                     </div>
                     
                     <div class="scan-section" id="upload-scan">
@@ -1048,13 +1094,12 @@
                             <input type="file" id="scan-file" accept="image/*">
                         </div>
                         <div class="scan-preview">
-                            <img id="uploaded-image" style="display: none; max-width: 100%;">
+                            <canvas id="upload-canvas"></canvas>
                         </div>
-                        <button id="scan-image" class="btn" style="display: none;"><i class="fas fa-search"></i> 扫描图片</button>
                     </div>
                     
                     <div class="scan-result" id="scan-result">
-                        <h4><i class="fas fa-check-circle"></i> 扫描结果</h4>
+                        <h3>扫描结果</h3>
                         <div id="scan-result-content"></div>
                         <button id="copy-result" class="btn btn-secondary" style="margin-top: 1rem;"><i class="fas fa-copy"></i> 复制结果</button>
                     </div>
@@ -1062,586 +1107,497 @@
             </div>
         </div>
         
-        <div class="contact-buttons">
-            <a href="https://qm.qq.com/q/lvlvCfjcA2" target="_blank" class="contact-btn qq">
-                <i class="fab fa-qq"></i> 加入QQ群
-            </a>
-            <a href="mailto:example@example.com?subject=灵动码生成器Pro反馈" class="contact-btn email">
-                <i class="fas fa-envelope"></i> 联系开发者
-            </a>
+        <div class="card">
+            <h2 style="text-align: center; margin-bottom: 1.5rem;">联系开发者</h2>
+            <div class="contact-buttons">
+                <a href="#" class="contact-btn qq"><i class="fab fa-qq"></i> QQ咨询</a>
+                <a href="#" class="contact-btn email"><i class="fas fa-envelope"></i> 邮件联系</a>
+            </div>
         </div>
-        
-        <footer>
-            <p>© 2025 灵动码生成器 Pro | 匠心打造</p>
-        </footer>
     </div>
 
     <script>
-        // 全局状态
-        let generatedData = {
-            qrCodes: [],
-            barcodes: [],
-            businessCards: []
-        };
+        // 主题切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
         
-        // 扫码相关变量
-        let scanStream = null;
-        let scanInterval = null;
+        // 检查本地存储的主题设置
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
         
-        // DOM加载完成后初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            // 初始化标签页切换
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    tab.classList.add('active');
-                    document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
-                    
-                    // 停止扫描当切换到其他标签页
-                    if (tab.dataset.tab !== 'scan') {
-                        stopScanning();
-                    }
-                });
-            });
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             
-            // 初始化扫码方式切换
-            document.querySelectorAll('.scan-method').forEach(method => {
-                method.addEventListener('click', function() {
-                    document.querySelectorAll('.scan-method').forEach(m => m.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    document.querySelectorAll('.scan-section').forEach(section => {
-                        section.style.display = 'none';
-                    });
-                    
-                    if (this.dataset.method === 'camera') {
-                        document.getElementById('camera-scan').style.display = 'block';
-                        stopScanning();
-                    } else {
-                        document.getElementById('upload-scan').style.display = 'block';
-                        document.getElementById('scan-image').style.display = 'none';
-                        document.getElementById('uploaded-image').style.display = 'none';
-                        document.getElementById('scan-result').style.display = 'none';
-                    }
-                });
-            });
-            
-            // 初始化二维码生成
-            document.getElementById('generate-qr').addEventListener('click', generateQRCode);
-            
-            // 初始化条形码生成
-            document.getElementById('generate-barcode').addEventListener('click', generateBarcode);
-            
-            // 初始化电子名片生成
-            document.getElementById('generate-card').addEventListener('click', generateBusinessCard);
-            
-            // 初始化下载按钮
-            document.getElementById('download-qr').addEventListener('click', downloadQRCode);
-            document.getElementById('download-barcode').addEventListener('click', downloadBarcode);
-            document.getElementById('download-card').addEventListener('click', downloadBusinessCard);
-            
-            // 初始化扫码功能
-            document.getElementById('start-scan').addEventListener('click', startScanning);
-            document.getElementById('stop-scan').addEventListener('click', stopScanning);
-            document.getElementById('scan-file').addEventListener('change', handleFileUpload);
-            document.getElementById('scan-image').addEventListener('click', scanUploadedImage);
-            document.getElementById('copy-result').addEventListener('click', copyScanResult);
-            
-            // 编码类型切换
-            document.querySelectorAll('input[name="card-type"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    document.getElementById('card-content').placeholder = 
-                        this.value === 'qr' ? '输入要编码的内容...' : '输入内容...';
-                });
-            });
-            
-            // 布局选择
-            document.querySelectorAll('.layout-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.layout-option').forEach(opt => 
-                        opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
-            
-            // 生成二维码
-            function generateQRCode() {
-                const btn = document.getElementById('generate-qr');
-                const originalText = btn.innerHTML;
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+        
+        // 标签页切换功能
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有标签和内容的激活状态
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
                 
-                btn.innerHTML = '<i class="fas fa-magic"></i> 生成中...';
-                btn.classList.add('loading');
+                // 激活当前标签和内容
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
                 
-                const content = document.getElementById('qr-content').value.trim();
-                if (!content) {
-                    alert('请输入二维码内容');
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('loading');
-                    return;
+                // 停止摄像头（如果正在运行）
+                if (tabId !== 'scan') {
+                    stopCamera();
                 }
+            });
+        });
+        
+        // 扫码方法切换
+        document.querySelectorAll('.scan-method').forEach(method => {
+            method.addEventListener('click', function() {
+                document.querySelectorAll('.scan-method').forEach(m => m.classList.remove('active'));
+                document.querySelectorAll('.scan-section').forEach(s => s.style.display = 'none');
                 
-                const size = parseInt(document.getElementById('qr-size').value);
-                const color = document.getElementById('qr-color').value;
-                const bgColor = document.getElementById('qr-bg').value;
-                const errorLevel = document.getElementById('qr-error-level').value;
-                const margin = parseInt(document.getElementById('qr-margin').value);
-                const logoFile = document.getElementById('qr-logo').files[0];
+                this.classList.add('active');
+                const methodType = this.getAttribute('data-method');
+                document.getElementById(`${methodType}-scan`).style.display = 'block';
                 
-                const qrcodeElement = document.getElementById('qrcode');
-                qrcodeElement.innerHTML = '';
-                
-                const canvas = document.createElement('canvas');
-                qrcodeElement.appendChild(canvas);
-                
-                // 生成二维码
+                // 停止摄像头（如果切换到上传模式）
+                if (methodType === 'upload') {
+                    stopCamera();
+                }
+            });
+        });
+        
+        // 二维码生成功能 - 修复版
+        document.getElementById('generate-qr').addEventListener('click', generateQRCode);
+        
+        function generateQRCode() {
+            const content = document.getElementById('qr-content').value;
+            if (!content.trim()) {
+                alert('请输入二维码内容');
+                return;
+            }
+            
+            const size = parseInt(document.getElementById('qr-size').value);
+            const color = document.getElementById('qr-color').value;
+            const bgColor = document.getElementById('qr-bg').value;
+            const errorLevel = document.getElementById('qr-error-level').value;
+            const margin = parseInt(document.getElementById('qr-margin').value);
+            
+            // 获取canvas元素
+            const canvas = document.getElementById('qrcode');
+            
+            // 生成二维码 - 修复版
+            try {
                 QRCode.toCanvas(canvas, content, {
                     width: size,
+                    margin: margin,
                     color: {
                         dark: color,
                         light: bgColor
                     },
-                    errorCorrectionLevel: errorLevel,
-                    margin: margin
+                    errorCorrectionLevel: errorLevel
                 }, function(error) {
                     if (error) {
                         console.error(error);
                         alert('生成二维码时出错: ' + error.message);
-                        btn.innerHTML = originalText;
-                        btn.classList.remove('loading');
-                        return;
-                    }
-                    
-                    // 如果有LOGO，添加到二维码中心
-                    if (logoFile) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            const logoImg = new Image();
-                            logoImg.onload = function() {
-                                const ctx = canvas.getContext('2d');
-                                const logoSize = size * 0.2; // LOGO大小为二维码的20%
-                                const logoX = (size - logoSize) / 2;
-                                const logoY = (size - logoSize) / 2;
-                                
-                                // 绘制白色背景
-                                ctx.fillStyle = bgColor;
-                                ctx.fillRect(logoX - 2, logoY - 2, logoSize + 4, logoSize + 4);
-                                
-                                // 绘制LOGO
-                                ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
-                                
-                                showResult('qr');
-                            };
-                            logoImg.src = e.target.result;
-                        };
-                        reader.readAsDataURL(logoFile);
                     } else {
-                        showResult('qr');
-                    }
-                    
-                    function showResult(type) {
-                        generatedData.qrCodes.push({
-                            content: content,
-                            size: size,
-                            color: color,
-                            bgColor: bgColor,
-                            errorLevel: errorLevel,
-                            margin: margin,
-                            logo: logoFile ? true : false,
-                            timestamp: new Date().getTime()
-                        });
-                        
+                        // 显示结果区域
                         document.getElementById('qr-result').style.display = 'block';
-                        btn.innerHTML = originalText;
-                        btn.classList.remove('loading');
+                        
+                        // 如果有上传LOGO，添加到二维码中心
+                        const logoFile = document.getElementById('qr-logo').files[0];
+                        if (logoFile) {
+                            addLogoToQR(logoFile, size, canvas);
+                        }
                     }
+                });
+            } catch (error) {
+                console.error(error);
+                alert('生成二维码时出错: ' + error.message);
+            }
+        }
+        
+        function addLogoToQR(logoFile, qrSize, canvas) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const logoImg = new Image();
+                logoImg.onload = function() {
+                    const ctx = canvas.getContext('2d');
+                    
+                    // 计算LOGO尺寸（二维码尺寸的1/5）
+                    const logoSize = qrSize / 5;
+                    const x = (qrSize - logoSize) / 2;
+                    const y = (qrSize - logoSize) / 2;
+                    
+                    // 绘制白色背景
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(x - 2, y - 2, logoSize + 4, logoSize + 4);
+                    
+                    // 绘制LOGO
+                    ctx.drawImage(logoImg, x, y, logoSize, logoSize);
+                };
+                logoImg.src = e.target.result;
+            };
+            reader.readAsDataURL(logoFile);
+        }
+        
+        // 二维码下载功能
+        document.getElementById('download-qr').addEventListener('click', function() {
+            const canvas = document.getElementById('qrcode');
+            if (!canvas) {
+                alert('请先生成二维码');
+                return;
+            }
+            
+            const link = document.createElement('a');
+            link.download = 'qrcode.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        });
+        
+        // 条形码生成功能
+        document.getElementById('generate-barcode').addEventListener('click', generateBarcode);
+        
+        function generateBarcode() {
+            const content = document.getElementById('barcode-content').value;
+            if (!content.trim()) {
+                alert('请输入条形码内容');
+                return;
+            }
+            
+            const type = document.getElementById('barcode-type').value;
+            const width = parseInt(document.getElementById('barcode-width').value);
+            const height = parseInt(document.getElementById('barcode-height').value);
+            const color = document.getElementById('barcode-color').value;
+            const bgColor = document.getElementById('barcode-bg').value;
+            const displayValue = document.getElementById('barcode-display-value').value === 'true';
+            
+            // 清除之前的条形码
+            const svg = document.getElementById('barcode');
+            svg.innerHTML = '';
+            
+            // 生成条形码
+            try {
+                JsBarcode(svg, content, {
+                    format: type,
+                    width: width,
+                    height: height,
+                    displayValue: displayValue,
+                    lineColor: color,
+                    background: bgColor
+                });
+                
+                // 显示结果区域
+                document.getElementById('barcode-result').style.display = 'block';
+            } catch (error) {
+                console.error(error);
+                alert('生成条形码时出错: ' + error.message);
+            }
+        }
+        
+        // 条形码下载功能
+        document.getElementById('download-barcode').addEventListener('click', function() {
+            const svg = document.getElementById('barcode');
+            if (!svg || !svg.innerHTML) {
+                alert('请先生成条形码');
+                return;
+            }
+            
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+                
+                const link = document.createElement('a');
+                link.download = 'barcode.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            };
+            
+            img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+        });
+        
+        // 电子名片功能
+        document.getElementById('generate-card').addEventListener('click', generateBusinessCard);
+        
+        function generateBusinessCard() {
+            const name = document.getElementById('card-name').value;
+            const title = document.getElementById('card-title').value;
+            const info = document.getElementById('card-info').value;
+            const content = document.getElementById('card-content').value;
+            const cardType = document.querySelector('input[name="card-type"]:checked').value;
+            const layout = document.querySelector('.layout-option.selected').getAttribute('data-layout');
+            
+            if (!name.trim()) {
+                alert('请输入姓名或公司名称');
+                return;
+            }
+            
+            // 更新名片内容
+            document.querySelector('.business-card-name').textContent = name;
+            document.querySelector('.business-card-title').textContent = title;
+            document.querySelector('.business-card-info').textContent = info;
+            
+            // 处理图片
+            const imageFile = document.getElementById('card-image').files[0];
+            const cardImage = document.querySelector('.business-card-image');
+            
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    cardImage.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    cardImage.appendChild(img);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                cardImage.innerHTML = '';
+            }
+            
+            // 生成二维码或条形码
+            const cardCode = document.querySelector('.business-card-code');
+            cardCode.innerHTML = '';
+            
+            if (cardType === 'qr') {
+                // 生成二维码
+                const canvas = document.createElement('canvas');
+                cardCode.appendChild(canvas);
+                
+                QRCode.toCanvas(canvas, content, {
+                    width: 120,
+                    margin: 1,
+                    color: {
+                        dark: '#6c5ce7',
+                        light: '#ffffff'
+                    }
+                });
+            } else {
+                // 生成条形码
+                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                cardCode.appendChild(svg);
+                
+                JsBarcode(svg, content, {
+                    format: 'CODE128',
+                    width: 1.5,
+                    height: 60,
+                    displayValue: false,
+                    lineColor: '#2d3436',
+                    background: '#ffffff'
                 });
             }
             
-            // 生成条形码 - 修复版
-            function generateBarcode() {
-                const btn = document.getElementById('generate-barcode');
-                const originalText = btn.innerHTML;
-                
-                btn.innerHTML = '<i class="fas fa-barcode"></i> 生成中...';
-                btn.classList.add('loading');
-                
-                const content = document.getElementById('barcode-content').value.trim();
-                if (!content) {
-                    alert('请输入条形码内容');
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('loading');
-                    return;
-                }
-                
-                const type = document.getElementById('barcode-type').value;
-                const width = parseInt(document.getElementById('barcode-width').value);
-                const height = parseInt(document.getElementById('barcode-height').value);
-                const color = document.getElementById('barcode-color').value;
-                const bgColor = document.getElementById('barcode-bg').value;
-                const displayValue = document.getElementById('barcode-display-value').value === 'true';
-                
-                try {
-                    // 清空之前的内容
-                    const barcodeElement = document.getElementById('barcode');
-                    barcodeElement.innerHTML = '';
-                    
-                    // 创建SVG元素
-                    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                    svg.id = 'barcode-svg';
-                    barcodeElement.appendChild(svg);
-                    
-                    // 生成条形码
-                    JsBarcode('#barcode-svg', content, {
-                        format: type,
-                        width: width,
-                        height: height,
-                        displayValue: displayValue,
-                        lineColor: color,
-                        background: bgColor,
-                        margin: 10
-                    });
-                    
-                    generatedData.barcodes.push({
-                        content: content,
-                        type: type,
-                        width: width,
-                        height: height,
-                        color: color,
-                        bgColor: bgColor,
-                        displayValue: displayValue,
-                        timestamp: new Date().getTime()
-                    });
-                    
-                    document.getElementById('barcode-result').style.display = 'block';
-                } catch (error) {
-                    alert('生成条形码时出错: ' + error.message);
-                    console.error(error);
-                }
-                
-                btn.innerHTML = originalText;
-                btn.classList.remove('loading');
-            }
+            // 更新布局
+            const businessCard = document.getElementById('business-card-result');
+            businessCard.className = 'business-card';
+            businessCard.classList.add(`${layout}-layout`);
+            businessCard.style.display = 'block';
             
-            // 生成电子名片 - 优化版
-            function generateBusinessCard() {
-                const btn = document.getElementById('generate-card');
-                const originalText = btn.innerHTML;
-                
-                btn.innerHTML = '<i class="fas fa-id-card"></i> 生成中...';
-                btn.classList.add('loading');
-                
-                const imageFile = document.getElementById('card-image').files[0];
-                const name = document.getElementById('card-name').value.trim();
-                const title = document.getElementById('card-title').value.trim();
-                const info = document.getElementById('card-info').value.trim();
-                const content = document.getElementById('card-content').value.trim();
-                const isQR = document.getElementById('card-type-qr').checked;
-                const layout = document.querySelector('.layout-option.selected').dataset.layout;
-                
-                if (!name) {
-                    alert('请输入姓名或公司名称');
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('loading');
-                    return;
-                }
-                
-                if (!content) {
-                    alert('请输入编码内容');
-                    btn.innerHTML = originalText;
-                    btn.classList.remove('loading');
-                    return;
-                }
-                
-                // 更新名片显示
-                document.getElementById('card-result-name').textContent = name;
-                document.getElementById('card-result-title').textContent = title;
-                document.getElementById('card-result-info').textContent = info;
-                
-                // 提取联系信息
-                const phoneMatch = info.match(/电话[：:]\s*(.+)/);
-                const emailMatch = info.match(/邮箱[：:]\s*(.+)/);
-                const addressMatch = info.match(/地址[：:]\s*(.+)/);
-                
-                if (phoneMatch) document.getElementById('card-result-phone').textContent = phoneMatch[1];
-                if (emailMatch) document.getElementById('card-result-email').textContent = emailMatch[1];
-                if (addressMatch) document.getElementById('card-result-address').textContent = addressMatch[1];
-                
-                // 处理图片
-                const cardResult = document.getElementById('business-card-result');
-                cardResult.className = `business-card ${layout}-layout`;
-                
-                if (imageFile) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        document.getElementById('card-result-image').src = e.target.result;
-                        generateCardCode();
-                    };
-                    reader.readAsDataURL(imageFile);
-                } else {
-                    document.getElementById('card-result-image').src = '';
-                    generateCardCode();
-                }
-                
-                function generateCardCode() {
-                    const codeContainer = document.getElementById('card-result-code');
-                    codeContainer.innerHTML = '';
-                    
-                    if (isQR) {
-                        // 生成二维码
-                        const canvas = document.createElement('canvas');
-                        codeContainer.appendChild(canvas);
-                        
-                        QRCode.toCanvas(canvas, content, {
-                            width: 150,
-                            color: {
-                                dark: '#6c5ce7',
-                                light: '#ffffff'
-                            },
-                            errorCorrectionLevel: 'M'
-                        }, function(error) {
-                            if (error) {
-                                console.error(error);
-                                alert('生成二维码时出错: ' + error.message);
-                                return;
-                            }
-                            showCardResult();
-                        });
-                    } else {
-                        // 生成条形码
-                        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                        svg.id = 'business-card-barcode';
-                        codeContainer.appendChild(svg);
-                        
-                        try {
-                            JsBarcode('#business-card-barcode', content, {
-                                format: 'CODE128',
-                                width: 2,
-                                height: 80,
-                                displayValue: true,
-                                lineColor: '#2d3436',
-                                background: '#ffffff'
-                            });
-                            showCardResult();
-                        } catch (error) {
-                            alert('生成条形码时出错: ' + error.message);
-                            console.error(error);
-                        }
-                    }
-                    
-                    function showCardResult() {
-                        generatedData.businessCards.push({
-                            name: name,
-                            title: title,
-                            info: info,
-                            content: content,
-                            isQR: isQR,
-                            layout: layout,
-                            image: imageFile ? true : false,
-                            timestamp: new Date().getTime()
-                        });
-                        
-                        cardResult.style.display = 'block';
-                        btn.innerHTML = originalText;
-                        btn.classList.remove('loading');
-                    }
-                }
-            }
+            // 显示下载按钮
+            document.getElementById('card-actions').style.display = 'flex';
+        }
+        
+        // 名片布局选择
+        document.querySelectorAll('.layout-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.layout-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        // 名片下载功能
+        document.getElementById('download-card').addEventListener('click', function() {
+            const businessCard = document.getElementById('business-card-result');
             
-            // 下载二维码
-            function downloadQRCode() {
-                const canvas = document.querySelector('#qrcode canvas');
-                if (!canvas) {
-                    alert('请先生成二维码');
-                    return;
-                }
-                
+            html2canvas(businessCard).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `二维码_${new Date().getTime()}.png`;
+                link.download = 'business-card.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
+            });
+        });
+        
+        // 扫码功能
+        let videoStream = null;
+        let scanAnimationId = null;
+        
+        // 启动摄像头 - 修复版
+        document.getElementById('start-camera').addEventListener('click', startCamera);
+        
+        function startCamera() {
+            const video = document.getElementById('scan-video');
+            const startBtn = document.getElementById('start-camera');
+            const stopBtn = document.getElementById('stop-camera');
+            
+            // 修复摄像头权限问题
+            const constraints = {
+                video: { 
+                    facingMode: 'environment',
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
+                audio: false
+            };
+            
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+                    videoStream = stream;
+                    video.srcObject = stream;
+                    startBtn.style.display = 'none';
+                    stopBtn.style.display = 'inline-flex';
+                    
+                    // 开始扫描
+                    scanQRCode();
+                })
+                .catch(err => {
+                    console.error('摄像头访问错误:', err);
+                    // 提供更友好的错误提示
+                    if (err.name === 'NotAllowedError') {
+                        alert('摄像头权限被拒绝。请检查浏览器设置，允许此网站访问摄像头，然后重试。');
+                    } else if (err.name === 'NotFoundError') {
+                        alert('未找到摄像头设备。请确保您的设备已连接摄像头。');
+                    } else {
+                        alert('无法访问摄像头: ' + err.message);
+                    }
+                });
+        }
+        
+        // 停止摄像头
+        document.getElementById('stop-camera').addEventListener('click', stopCamera);
+        
+        function stopCamera() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = null;
             }
             
-            // 下载条形码
-            function downloadBarcode() {
-                const svg = document.querySelector('#barcode svg');
-                if (!svg) {
-                    alert('请先生成条形码');
-                    return;
+            if (scanAnimationId) {
+                cancelAnimationFrame(scanAnimationId);
+                scanAnimationId = null;
+            }
+            
+            const video = document.getElementById('scan-video');
+            video.srcObject = null;
+            
+            document.getElementById('start-camera').style.display = 'inline-flex';
+            document.getElementById('stop-camera').style.display = 'none';
+        }
+        
+        // 扫描二维码
+        function scanQRCode() {
+            const video = document.getElementById('scan-video');
+            const canvas = document.getElementById('scan-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            function tick() {
+                if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const code = jsQR(imageData.data, imageData.width, imageData.height);
+                    
+                    if (code) {
+                        // 找到二维码，显示结果
+                        document.getElementById('scan-result-content').textContent = code.data;
+                        document.getElementById('scan-result').style.display = 'block';
+                        
+                        // 绘制二维码定位框
+                        drawQRCodeOutline(ctx, code.location);
+                    } else {
+                        document.getElementById('scan-result').style.display = 'none';
+                    }
                 }
                 
-                const serializer = new XMLSerializer();
-                const svgStr = serializer.serializeToString(svg);
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
+                if (videoStream) {
+                    scanAnimationId = requestAnimationFrame(tick);
+                }
+            }
+            
+            tick();
+        }
+        
+        // 绘制二维码定位框
+        function drawQRCodeOutline(ctx, location) {
+            ctx.strokeStyle = '#00cec9';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(location.topLeftCorner.x, location.topLeftCorner.y);
+            ctx.lineTo(location.topRightCorner.x, location.topRightCorner.y);
+            ctx.lineTo(location.bottomRightCorner.x, location.bottomRightCorner.y);
+            ctx.lineTo(location.bottomLeftCorner.x, location.bottomLeftCorner.y);
+            ctx.closePath();
+            ctx.stroke();
+        }
+        
+        // 上传图片扫码
+        document.getElementById('scan-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
                 const img = new Image();
-                
                 img.onload = function() {
+                    const canvas = document.getElementById('upload-canvas');
+                    const ctx = canvas.getContext('2d');
+                    
                     canvas.width = img.width;
                     canvas.height = img.height;
                     ctx.drawImage(img, 0, 0);
                     
-                    const link = document.createElement('a');
-                    link.download = `条形码_${new Date().getTime()}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                };
-                
-                img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgStr)));
-            }
-            
-            // 下载电子名片
-            function downloadBusinessCard() {
-                const card = document.getElementById('business-card-result');
-                if (card.style.display !== 'block') {
-                    alert('请先生成电子名片');
-                    return;
-                }
-                
-                html2canvas(card, {
-                    scale: 2,
-                    logging: false,
-                    useCORS: true
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = `电子名片_${new Date().getTime()}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                });
-            }
-            
-            // 开始扫码
-            function startScanning() {
-                const video = document.getElementById('scan-video');
-                const startBtn = document.getElementById('start-scan');
-                const stopBtn = document.getElementById('stop-scan');
-                
-                startBtn.style.display = 'none';
-                stopBtn.style.display = 'inline-block';
-                document.getElementById('scan-result').style.display = 'none';
-                
-                navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-                    .then(function(stream) {
-                        scanStream = stream;
-                        video.srcObject = stream;
-                        video.play();
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const code = jsQR(imageData.data, imageData.width, imageData.height);
+                    
+                    if (code) {
+                        document.getElementById('scan-result-content').textContent = code.data;
+                        document.getElementById('scan-result').style.display = 'block';
                         
-                        scanInterval = setInterval(scanFrame, 500);
-                    })
-                    .catch(function(err) {
-                        console.error("摄像头访问错误: ", err);
-                        alert("无法访问摄像头: " + err.message);
-                        startBtn.style.display = 'inline-block';
-                        stopBtn.style.display = 'none';
-                    });
-            }
-            
-            // 停止扫码
-            function stopScanning() {
-                const video = document.getElementById('scan-video');
-                const startBtn = document.getElementById('start-scan');
-                const stopBtn = document.getElementById('stop-scan');
-                
-                if (scanInterval) {
-                    clearInterval(scanInterval);
-                    scanInterval = null;
-                }
-                
-                if (scanStream) {
-                    scanStream.getTracks().forEach(track => track.stop());
-                    scanStream = null;
-                    video.srcObject = null;
-                }
-                
-                startBtn.style.display = 'inline-block';
-                stopBtn.style.display = 'none';
-            }
-            
-            // 扫描视频帧
-            function scanFrame() {
-                const video = document.getElementById('scan-video');
-                const canvas = document.getElementById('scan-canvas');
-                const ctx = canvas.getContext('2d');
-                
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                    inversionAttempts: "dontInvert",
-                });
-                
-                if (code) {
-                    stopScanning();
-                    showScanResult(code.data);
-                }
-            }
-            
-            // 处理上传文件
-            function handleFileUpload(event) {
-                const file = event.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.getElementById('uploaded-image');
-                    img.src = e.target.result;
-                    img.style.display = 'block';
-                    document.getElementById('scan-image').style.display = 'inline-block';
+                        // 绘制二维码定位框
+                        drawQRCodeOutline(ctx, code.location);
+                    } else {
+                        document.getElementById('scan-result-content').textContent = '未检测到二维码';
+                        document.getElementById('scan-result').style.display = 'block';
+                    }
                 };
-                reader.readAsDataURL(file);
-            }
-            
-            // 扫描上传的图片
-            function scanUploadedImage() {
-                const img = document.getElementById('uploaded-image');
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                
-                canvas.width = img.naturalWidth;
-                canvas.height = img.naturalHeight;
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const code = jsQR(imageData.data, imageData.width, imageData.height, {
-                    inversionAttempts: "dontInvert",
-                });
-                
-                if (code) {
-                    showScanResult(code.data);
-                } else {
-                    alert('未检测到二维码，请尝试其他图片');
-                }
-            }
-            
-            // 显示扫描结果
-            function showScanResult(result) {
-                const resultContent = document.getElementById('scan-result-content');
-                resultContent.textContent = result;
-                document.getElementById('scan-result').style.display = 'block';
-                
-                // 如果是URL，添加点击链接
-                if (result.startsWith('http://') || result.startsWith('https://')) {
-                    resultContent.innerHTML = `<a href="${result}" target="_blank">${result}</a>`;
-                }
-            }
-            
-            // 复制扫描结果
-            function copyScanResult() {
-                const resultContent = document.getElementById('scan-result-content');
-                const text = resultContent.textContent;
-                
-                navigator.clipboard.writeText(text)
-                    .then(() => {
-                        alert('已复制到剪贴板');
-                    })
-                    .catch(err => {
-                        console.error('复制失败: ', err);
-                        alert('复制失败，请手动复制');
-                    });
-            }
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
         });
+        
+        // 复制扫描结果
+        document.getElementById('copy-result').addEventListener('click', function() {
+            const resultContent = document.getElementById('scan-result-content').textContent;
+            navigator.clipboard.writeText(resultContent)
+                .then(() => {
+                    alert('已复制到剪贴板');
+                })
+                .catch(err => {
+                    console.error('复制失败: ', err);
+                    alert('复制失败，请手动复制');
+                });
+        });
+        
+        // 初始化默认显示
+        document.getElementById('camera-scan').style.display = 'block';
     </script>
 </body>
 </html>
